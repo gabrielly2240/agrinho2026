@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Pegada de Carbono - Agrinho</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Simulador de CO₂ Agrícola</h1>
+        <p>Calcule o impacto ambiental das suas máquinas e saiba como compensar.</p>
+
+        <div class="form-group">
+            <label for="combustivel">Tipo de Combustível:</label>
+            <select id="combustivel">
+                <option value="diesel">Diesel Comum (2.68 kg CO₂/L)</option>
+                <option value="biodiesel">Biodiesel (0.50 kg CO₂/L)*</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="consumo">Consumo Médio (Litros por Hora):</label>
+            <input type="number" id="consumo" placeholder="Ex: 15" value="15">
+        </div>
+
+        <div class="form-group">
+            <label for="horas">Horas Trabalhadas:</label>
+            <input type="number" id="horas" placeholder="Ex: 100">
+        </div>
+
+        <button onclick="calcular()">Calcular Impacto</button>
+
+        <div id="resultado" class="hidden">
+            <hr>
+            <h3>Relatório de Impacto</h3>
+            <p id="emissaoTexto"></p>
+            <p id="arvoresTexto"></p>
+            <small>* O biodiesel considera a emissão do ciclo de vida reduzida.</small>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
