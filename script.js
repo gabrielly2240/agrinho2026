@@ -1,63 +1,73 @@
-function calcular() {
-    // 1. Pegar os valores dos inputs
+function calcularDesafio() {
     const combustivel = document.getElementById('combustivel').value;
     const consumo = parseFloat(document.getElementById('consumo').value);
     const horas = parseFloat(document.getElementById('horas').value);
 
-    // Validação simples para não calcular com campos vazios
     if (isNaN(consumo) || isNaN(horas) || consumo <= 0 || horas <= 0) {
-        alert("Por favor, insira valores válidos para o consumo e as horas trabalhadas.");
+        alert("Por favor, preencha os campos corretamente para iniciar o desafio.");
         return;
     }
 
-    // 2. Definir o fator de emissão
-    let fatorEmissao = 2.68; // Diesel comum
-    if (combustivel === 'biodiesel') {
-        fatorEmissao = 0.50; // Biodiesel
-    }
-
-    // 3. Realizar as contas
-    // Total Litros = Consumo por hora * total de horas
-    const totalLitros = consumo * horas;
-    // Total CO2 = Total Litros * Fator de Emissão
-    const totalCO2 = totalLitros * fatorEmissao;
-    // Estimativa: 1 árvore absorve cerca de 15kg de CO2 por ano
+    // Cálculos básicos
+    const fatorEmissao = combustivel === 'biodiesel' ? 0.50 : 2.68;
+    const totalCO2 = consumo * horas * fatorEmissao;
     const arvoresNecessarias = Math.ceil(totalCO2 / 15);
 
-    // 4. Mostrar os resultados no HTML
-    document.getElementById('emissaoTexto').innerHTML = `Sua operação emitiu aproximadamente <strong>${totalCO2.toFixed(2)} kg de CO₂</strong> na atmosfera.`;
-    document.getElementById('arvoresTexto').innerHTML = `Para compensar essa emissão, você precisaria plantar cerca de <strong>${arvoresNecessarias} árvore(s)</strong> e mantê-la(s) viva(s) por um ano.`;
+    // Exibe os dados brutos
+    document.getElementById('emissaoTexto').innerHTML = `💨 <strong>Pegada de Carbono:</strong> ${totalCO2.toFixed(1)} kg de CO₂ jogados na atmosfera.`;
+    document.getElementById('arvoresTexto').innerHTML = `🌳 <strong>Desafio do Plantio:</strong> Você precisa de pelo menos <strong>${arvoresNecessarias} árvore(s)</strong> crescendo por um ano para anular esse impacto.`;
 
-    // 5. Gerar as dicas personalizadas de prevenção
-    gerarDicas(combustivel);
+    // Sistema de Rank / Gamificação
+    definirRankEcolgico(totalCO2, combustivel);
 
-    // 6. Revelar a área de resultado tirando a classe 'hidden'
     document.getElementById('resultado').classList.remove('hidden');
 }
 
-function gerarDicas(tipoCombustivel) {
+function definirRankEcolgico(co2, combustivel) {
+    const badge = document.getElementById('badgeNota');
+    const statusMsg = document.getElementById('statusMensagem');
     const listaDicas = document.getElementById('listaDicas');
-    listaDicas.innerHTML = ""; // Limpa as dicas anteriores
+    
+    listaDicas.innerHTML = ""; // Limpa missões anteriores
+    let missoes = [];
 
-    // Dicas gerais que servem para qualquer situação
-    const dicasGerais = [
-        "<strong>Manutenção Preventiva:</strong> Mantenha os filtros de ar e de combustível do trator limpos. Motores desregulados gastam até 15% mais combustível.",
-        "<strong>Pressão dos Pneus:</strong> Calibre os pneus das máquinas regularmente. Pneus murchos aumentam o esforço do motor e o consumo de combustível.",
-        "<strong>Planejamento de Rotas:</strong> Planeje o caminhamento na lavoura para evitar manobras desnecessárias e reduzir o tempo do motor ligado em marcha lenta.",
-        "<strong>Agricultura de Precisão:</strong> Se possível, utilize guias de GPS para evitar a sobreposição de passadas do trator na mesma área."
-    ];
-
-    // Dica específica baseada na escolha do combustível
-    if (tipoCombustivel === 'diesel') {
-        dicasGerais.unshift("<strong>Transição Energética:</strong> Considere misturar uma porcentagem maior de biodiesel ou migrar totalmente para ele para reduzir drasticamente sua pegada de carbono.");
+    // Lógica de classificação baseada na quantidade de CO2 emitido
+    if (co2 < 200) {
+        badge.innerText = "A";
+        badge.className = "badge nota-a";
+        statusMsg.innerHTML = "🏆 <strong>Guardião da Terra!</strong> Seu impacto é super baixo. Você está protegendo o solo e o futuro!";
+        missoes = [
+            "<strong>Missão Compartilhar:</strong> Ensine seus vizinhos sobre as vantagens de monitorar o gasto de combustível.",
+            "<strong>Próximo Nível:</strong> Que tal zerar totalmente instalando painéis solares para carregar pequenas ferramentas elétricas na fazenda?"
+        ];
+    } else if (co2 >= 200 && co2 <= 1000) {
+        badge.innerText = "C";
+        badge.className = "badge nota-c";
+        statusMsg.innerHTML = "🌱 <strong>Produtor Consciente.</strong> Você está no caminho certo, mas sua máquina ainda pode ser mais eficiente.";
+        missoes = [
+            "<strong>Missão Pressão Certa:</strong> Calibrar os pneus do trator toda semana reduz o consumo em até 4%. Complete essa missão!",
+            "<strong>Missão Upgrade:</strong> Na próxima compra, planeje a transição para misturas maiores de Biodiesel."
+        ];
     } else {
-        dicasGerais.unshift("<strong>Parabéns!</strong> Você já utiliza Biodiesel, o que reduz o impacto ambiental. Continue incentivando a produção local de biocombustíveis.");
+        badge.innerText = "E";
+        badge.className = "badge nota-e";
+        statusMsg.innerHTML = "⚠️ <strong>Alerta Ecológico!</strong> Suas emissões estão altas. A natureza precisa de ajuda para compensar esse gasto.";
+        missoes = [
+            "<strong>Missão Urgente - Manutenção:</strong> Filtros de ar sujos sufocam o motor e disparam o consumo. Troque-os imediatamente!",
+            "<strong>Missão Rotas Inteligentes:</strong> Use aplicativos ou GPS agrícolas para planejar trajetos mais curtos na lavoura e evitar o motor ligado à toa.",
+            "<strong>Missão Reflorestamento:</strong> Comece a plantar árvores nas Áreas de Preservação Permanente (APP) da sua propriedade para ontem."
+        ];
     }
 
-    // Inserir as dicas como itens de lista (<li>) no HTML
-    dicasGerais.forEach(dica => {
+    // Se ele usa diesel comum, adiciona uma missão extra pesada
+    if (combustivel === 'diesel') {
+        missoes.push("<strong>Missão Combustível Verde:</strong> Substitua o Diesel comum pelo Biodiesel para cortar suas emissões em mais de 70% de uma vez só.");
+    }
+
+    // Adiciona as missões na tela
+    missoes.forEach(missao => {
         const li = document.createElement('li');
-        li.innerHTML = dica;
+        li.innerHTML = `🔹 ${missao}`;
         listaDicas.appendChild(li);
     });
 }

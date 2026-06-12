@@ -3,46 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Pegada de Carbono - Agrinho</title>
+    <title>Desafio Carbono Zero - Agrinho</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>🌱 Simulador de CO₂ Agrícola</h1>
-        <p>Calcule o impacto ambiental das suas máquinas e saiba como compensar.</p>
+        <h1>🚜 Desafio Carbono Zero - Agrinho</h1>
+        <p>Descubra a sua nota de sustentabilidade e ganhe medalhas ecológicas!</p>
 
         <div class="form-group">
             <label for="combustivel">Tipo de Combustível:</label>
             <select id="combustivel">
-                <option value="diesel">Diesel Comum (2.68 kg CO₂/L)</option>
-                <option value="biodiesel">Biodiesel (0.50 kg CO₂/L)*</option>
+                <option value="diesel">Diesel Comum (Mais Poluente)</option>
+                <option value="biodiesel">Biodiesel (Mais Sustentável)*</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="consumo">Consumo Médio (Litros por Hora):</label>
+            <label for="consumo">Consumo do Trator (Litros por Hora):</label>
             <input type="number" id="consumo" placeholder="Ex: 15" value="15">
         </div>
 
         <div class="form-group">
-            <label for="horas">Horas Trabalhadas:</label>
+            <label for="horas">Horas de Trabalho Estimadas:</label>
             <input type="number" id="horas" placeholder="Ex: 100">
         </div>
 
-        <button onclick="calcular()">Calcular Impacto</button>
+        <button onclick="calcularDesafio()">Analisar Minha Lavoura</button>
 
         <div id="resultado" class="hidden">
             <hr>
-            <h3>📊 Relatório de Impacto</h3>
-            <p id="emissaoTexto"></p>
-            <p id="arvoresTexto"></p>
+            
+            <div class="painel-gamificacao">
+                <h3>Sua Classificação Ecológica</h3>
+                <div id="badgeNota" class="badge">A</div>
+                <p id="statusMensagem"></p>
+            </div>
+
+            <div class="dados-relatorio">
+                <p id="emissaoTexto"></p>
+                <p id="arvoresTexto"></p>
+            </div>
             
             <div id="dicas-container">
-                <h3>💡 Dicas para Reduzir o Impacto</h3>
+                <h3>🛠️ Missões para Melhorar sua Nota</h3>
                 <ul id="listaDicas"></ul>
             </div>
 
-            <small>* O biodiesel considera a emissão do ciclo de vida reduzida.</small>
+            <small>* O biodiesel reduz a pegada de carbono por ser renovável.</small>
         </div>
     </div>
     <script src="script.js"></script>
